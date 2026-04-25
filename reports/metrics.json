@@ -1,0 +1,39 @@
+{
+  "n_authentic": 100,
+  "n_tampered": 200,
+  "psnr_orig_vs_recompressed": {
+    "mean": 47.53378943562483,
+    "std": 0.18543446980871586
+  },
+  "ssim_orig_vs_recompressed": {
+    "mean": 0.99723183848808,
+    "std": 6.31500995383009e-05
+  },
+  "mean_ela_error": {
+    "authentic_mean": 0.610322635769844,
+    "tampered_mean": 0.629524995982647
+  },
+  "inside_vs_outside_bbox": {
+    "n": 200,
+    "inside_mean": 1.3546462187170982,
+    "outside_mean": 0.6092426532506943,
+    "inside_to_outside_ratio": 2.2234920872483324,
+    "fraction_with_inside_gt_outside": 0.605
+  },
+  "per_kind": {
+    "copy_move": {
+      "n": 100,
+      "inside_mean": 2.204610815048218,
+      "outside_mean": 0.6124930644035339,
+      "inside_to_outside_ratio": 3.599405353585744,
+      "fraction_with_inside_gt_outside": 1.0
+    },
+    "removal": {
+      "n": 100,
+      "inside_mean": 0.5046816223859787,
+      "outside_mean": 0.6059922420978546,
+      "inside_to_outside_ratio": 0.8328186193256308,
+      "fraction_with_inside_gt_outside": 0.21
+    }
+  }
+}
