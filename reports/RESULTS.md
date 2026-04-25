@@ -92,18 +92,40 @@ imbalance and harder removal cases will dominate the failure modes.
 
 ## YOLOv8 detector
 
-*Filled in automatically by the train stage.*
+YOLOv8n, 50 epochs, `imgsz=640`, `batch=8`, `device=cpu`, AdamW
+auto-selected by Ultralytics, total wall-time **1.63 h** on a 2-core
+EPYC 7763 VM. Training set 240 images / val set 60 images (45 manipulated
+instances + 15 background-only).
 
 | Metric | Value |
 |--------|-------|
-| mAP50 | _pending — see `runs/ela_yolo/train_val/`_ |
-| mAP50-95 | _pending_ |
-| Precision | _pending_ |
-| Recall | _pending_ |
+| **mAP@0.5** | **0.9946** |
+| **mAP@0.5:0.95** | **0.8806** |
+| **Precision** | **0.9770** |
+| **Recall** | **1.0000** |
 
-YOLOv8n, 50 epochs, imgsz=640, batch=8, device=cpu. Best weights:
-`runs/ela_yolo/train/weights/best.pt`. Per-class confusion matrix and
-PR curves are emitted by Ultralytics under the same directory.
+The detector reaches near-saturation on val by ~epoch 20 and continues
+refining mAP50-95 (a stricter IoU criterion) up to epoch 49.
+
+![training curves](figures/yolo/results.png)
+
+![precision-recall curve](figures/yolo/BoxPR_curve.png)
+
+### Validation prediction sample
+
+The validation grid below shows that the detector:
+
+* fires on copy-move regions (e.g. `auth_00000_cm0`, `auth_00022_cm0`),
+* fires on removal/inpainted regions (e.g. `auth_00006_rm0`,
+  `auth_00010_rm0`, `auth_00019_rm0`), and
+* correctly produces no detections on authentic images
+  (`auth_00001`, `auth_00005`, `auth_00006`, `auth_00019`).
+
+Despite ELA's *inverted* polarity for inpainting (lower error, not
+higher), the network learns both signatures simultaneously when
+trained on the union of the two manipulation classes.
+
+![val predictions](figures/yolo/val_batch0_pred.jpg)
 
 ## Reproducing
 
