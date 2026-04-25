@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Smoke test (synthetic, no Roboflow)
+        # Skip the YOLO training step so CI stays fast; the data pipeline,
+        # tampering, ELA, label assembly, and analysis stages all run.
+        run: |
+          python scripts/smoke_test.py --n 6 --size 512 --skip-train
+
+      - name: Smoke test with 1-epoch YOLO training
+        run: |
+          python scripts/smoke_test.py --n 6 --size 512 --epochs 1 --imgsz 320
+
+      - name: Upload artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-reports
+          path: |
+            dataset_smoke/reports/
+            dataset_smoke/runs/
+          if-no-files-found: ignore
