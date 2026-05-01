@@ -38,6 +38,56 @@ python scripts/run_pipeline.py --only train
 python scripts/smoke_test.py --n 6 --skip-train
 ```
 
+## Google Colab ELA + CNN + Gradio
+
+For image-level binary classification (`REAL` vs `FAKE`) in Google Colab, use
+[`notebooks/ela_cnn_gradio_colab.ipynb`](notebooks/ela_cnn_gradio_colab.ipynb).
+It implements:
+
+* preprocessing for JPEG/PNG inputs, EXIF-safe RGB conversion, low-resolution
+  upscaling, and canonical JPEG round-tripping before ELA so PNG and
+  recompressed files are handled consistently;
+* ELA generation with configurable recompression quality and scale;
+* CNN training with augmentation and an EfficientNetB0 pretrained backbone by
+  default, with a compact CNN fallback;
+* evaluation with validation accuracy and `confusion_matrix.png`;
+* a Gradio GUI that uploads an image, previews ELA, and outputs
+  `REAL`/`FAKE` plus confidence.
+
+Expected dataset layout:
+
+```text
+dataset/
+  real/        # aliases: authentic, original, asli
+  fake/        # aliases: tampered, manipulated, manipulasi
+```
+
+or explicit splits:
+
+```text
+dataset/
+  train/real
+  train/fake
+  val/real
+  val/fake
+```
+
+Script usage outside the notebook:
+
+```bash
+pip install -r requirements-colab.txt
+python scripts/ela_cnn_colab.py \
+  --data-dir /path/to/dataset \
+  --epochs 12 \
+  --launch-gradio
+```
+
+Useful CPU/smoke-test path:
+
+```bash
+python scripts/smoke_test_ela_cnn.py --n 4 --size 128
+```
+
 ## Pipeline Stages
 
 ```
