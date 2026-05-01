@@ -53,6 +53,7 @@ It implements:
 * evaluation with validation accuracy and `confusion_matrix.png`;
 * a Gradio GUI that uploads an image, previews ELA, and outputs
   `REAL`/`FAKE` plus confidence.
+* optional Roboflow Universe download support inside the Colab notebook.
 
 Expected dataset layout:
 
@@ -71,6 +72,22 @@ dataset/
   val/real
   val/fake
 ```
+
+Roboflow Universe datasets can be used from the notebook by filling:
+
+```python
+USE_ROBOFLOW = True
+ROBOFLOW_API_KEY = ""       # or leave empty to enter it securely at runtime
+ROBOFLOW_WORKSPACE = "workspace-name"
+ROBOFLOW_PROJECT = "project-name"
+ROBOFLOW_VERSION = 1
+ROBOFLOW_FORMAT = "folder"
+```
+
+Use Roboflow's `folder` export for classification datasets that already contain
+`real`/`fake` (or aliases like `authentic`/`tampered`) class folders. YOLO/object
+detection exports can still be downloaded, but they may need manual conversion
+or the repo's YOLO/tamper pipeline before training the ELA-CNN classifier.
 
 Script usage outside the notebook:
 
