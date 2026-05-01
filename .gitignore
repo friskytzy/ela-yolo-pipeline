@@ -6,6 +6,8 @@ __pycache__/
 
 # Datasets & artifacts (regenerable)
 dataset/
+dataset_ela_cnn/
+dataset_ela_cnn_smoke/
 dataset_smoke/
 labels/yolo/
 runs/
